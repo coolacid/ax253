@@ -71,6 +71,7 @@ class Control:
         validator=util.valid_length(1, 1, validators.instance_of(bytes)),
         converter=bytes_from_int,
     )
+    final: bool = False
 
     @property
     def bv(self) -> bitarray:
@@ -102,7 +103,7 @@ class Control:
         return bool(self.bv[4])
 
     def __bytes__(self) -> bytes:
-        return self.v
+        return self.v if not self.final else bytes([int(self.v[0] | (1<<4))])
 
 
 def bytes_or_encode_utf8(v):
